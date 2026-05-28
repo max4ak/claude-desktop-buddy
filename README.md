@@ -22,26 +22,40 @@ waiting, and lets you approve or deny right from the device.
 
 ## Hardware
 
-The firmware targets ESP32 with the Arduino framework. As written, it
-depends on the M5StickCPlus library for its display, IMU, and button
-drivers—so you'll need that board, or a fork that swaps those drivers for
-your own pin layout.
+The firmware targets ESP32 with the Arduino framework via the
+[M5Unified](https://github.com/m5stack/M5Unified) library, which means a
+single source tree builds for two boards out of the box:
+
+| Board             | PlatformIO env  | Chip       | Notes                                            |
+| ----------------- | --------------- | ---------- | ------------------------------------------------ |
+| **M5StickC Plus** | `m5stickc-plus` | ESP32      | original target, AXP192 power chip, hardware RTC |
+| **M5StickS3**     | `m5sticks3`     | ESP32-S3   | native USB, no hardware RTC (clock re-syncs from the bridge) |
+
+Both share the same 135×240 LCD, so character art, ASCII pets, and UI
+layouts work unchanged on either device. To fork for another board, swap
+the library and update pin-specific code (button/LED GPIOs, screen size).
 
 ## Flashing
 
 Install
 [PlatformIO Core](https://docs.platformio.org/en/latest/core/installation/),
-then:
+then pick the env that matches your device:
 
 ```bash
-pio run -t upload
+pio run -e m5stickc-plus -t upload    # original M5StickC Plus
+pio run -e m5sticks3 -t upload        # M5StickS3
 ```
 
 If you're starting from a previously-flashed device, wipe it first:
 
 ```bash
-pio run -t erase && pio run -t upload
+pio run -e <env> -t erase && pio run -e <env> -t upload
 ```
+
+On the M5StickS3, if `upload` fails with `Failed to connect to ESP32-S3`,
+manually enter download mode: unplug USB, hold the front "A" button (or
+the side power button — depends on unit), plug USB back in while holding,
+release after ~2 seconds. The screen stays blank; now retry the upload.
 
 Once running, you can also wipe everything from the device itself: **hold A
 → settings → reset → factory reset → tap twice**.
