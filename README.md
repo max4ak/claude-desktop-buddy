@@ -1,4 +1,19 @@
-# claude-desktop-buddy
+# claude-desktop-buddy (M5StickS3 fork)
+
+> **This is a fork of [anthropics/claude-desktop-buddy](https://github.com/anthropics/claude-desktop-buddy)
+> that adds M5StickS3 (ESP32-S3) support alongside the original M5StickC Plus.**
+> The upstream repo's contributing policy directs board ports to live in forks,
+> so this is the public home for the M5StickS3 build.
+>
+> Same source tree, two PlatformIO envs:
+> ```bash
+> pio run -e m5stickc-plus -t upload    # original ESP32 board
+> pio run -e m5sticks3 -t upload        # ESP32-S3 board
+> ```
+> See [the Hardware and Flashing sections below](#hardware) for details.
+> End-to-end verified against Claude Desktop's Hardware Buddy UI on real hardware.
+
+---
 
 Claude for macOS and Windows can connect Claude Cowork and Claude Code to
 maker devices over BLE, so developers and makers can build hardware that
